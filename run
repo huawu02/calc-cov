@@ -1,0 +1,119 @@
+#!/bin/bash
+#
+# Run calc_cov Gear
+# Built to flywheel-v0 spec.
+#
+
+
+CONTAINER="[calc_cov]"
+echo -e "$CONTAINER  Initiated"
+
+# Configure the ENV
+export MCRROOT=/opt/mcr/v95
+export LD_LIBRARY_PATH=${MCRROOT}/runtime/glnxa64:${MCRROOT}/bin/glnxa64:${MCRROOT}/sys/os/glnxa64:$LD_LIBRARY_PATH
+export XAPPLRESDIR=${MCRROOT}/X11/app-defaults
+
+###############################################################################
+# Configure paths
+
+FLYWHEEL_BASE=/flywheel/v0
+OUTPUT_DIR=$FLYWHEEL_BASE/output
+INPUT_DIR=$FLYWHEEL_BASE/input
+CONFIG_FILE=$FLYWHEEL_BASE/config.json
+MANIFEST_FILE=$FLYWHEEL_BASE/manifest.json
+PFILE_DIR=$INPUT_DIR/pfile
+#T1_DIR=$INPUT_DIR/t1w_dicom_archive
+
+# Make the directories
+WORK_DIR=/calc_cov
+mkdir ${WORK_DIR}
+
+# T1 Directory #TODO: Add support for this. Need to unzip, etc.
+#if [[ ! -d "${T1_DIR}" ]]; then
+#  T1_DIR=''
+#fi
+
+
+###############################################################################
+# Handle input files
+
+P_FILE=$(find ${PFILE_DIR} -type f -name "*.7.zip" | head -1)
+
+# If we find the zipped p-file we
+if [ -n "${P_FILE}" ]; then
+  unzip -q ${P_FILE} -d ${WORK_DIR}
+
+  # It's Gunzipped
+  GZ_FILE=$(find ${WORK_DIR} -type f -name "*.7.gz" | head -1)
+  gunzip "${GZ_FILE}"
+
+  # Find the input file from extracted archive
+  P_FILE=$(find ${WORK_DIR} -type f -name "*.7" | head -1)
+
+else
+  # We assume the p-file was already unzipped
+  P_FILE=$(find ${PFILE_DIR} -type f -name "*.7" | head -1)
+fi
+
+echo ${P_FILE}
+P_FILE_PATH=$(dirname ${P_FILE})
+
+# If we can't find it, we error out
+if [[ -z "${P_FILE}" ]]; then
+  echo -e "$CONTAINER  No valid p-files could be found!"
+  exit 1
+fi
+
+
+##############################################################################
+# Parse configuration
+
+function parse_config {
+  CONFIG_FILE=$FLYWHEEL_BASE/config.json
+  MANIFEST_FILE=$FLYWHEEL_BASE/manifest.json
+  if [[ -f $CONFIG_FILE ]]; then
+    echo -e "$(cat $CONFIG_FILE | jq -r '.config.'$1)"
+  else
+    CONFIG_FILE=$MANIFEST_FILE
+    echo -e "$(cat $MANIFEST_FILE | jq -r '.config.'$1'.default')"
+  fi
+}
+
+#config_metabolite="$(parse_config 'metabolite')"
+
+
+##############################################################################
+# Run Gannet
+
+echo -e "$CONTAINER  Starting calc_cov..."
+cd $OUTPUT_DIR
+/bin/run_calc_cov.sh "${MCRROOT}" "${P_FILE}" 
+
+# Check status code and die
+#if [[ $? != 0 ]]; then
+#  echo -e "$CONTAINER  Problem encountered during GannetRun"
+#  exit 1
+#fi
+
+
+##############################################################################
+# Get a list of the files in the output directory
+
+outputs=$(find ${P_FILE_PATH}/Noise* -type f )
+cp $outputs $OUTPUT_DIR
+
+# If outputs exist go home happy
+if [[ -z $outputs ]]; then
+  echo "$CONTAINER  FAILED: No results found in output directory... Exiting"
+  exit 1
+else
+  # Set permissions for outputs (prevent root only r/w)
+  chmod -R 777 $OUTPUT_DIR
+
+  # End
+  echo -e "$CONTAINER  Wrote: `ls ${OUTPUT_DIR}`"
+  echo -e "$CONTAINER  Done!"
+fi
+
+exit 0
+

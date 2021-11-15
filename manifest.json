@@ -1,0 +1,29 @@
+{
+	"name": "calc-cov",
+	"label": "Noise covariance matrix calculation",
+	"description": "Calculating the noise covariance matrix of a multi-channel receive array using the noise scan pfile",
+	"version": "1.0",
+	"inputs": {
+		"pfile": {
+			"base": "file",
+			"description": "Noise scan P-File (.7.zip, or .7).",
+			"type": {
+				"enum": [
+					"pfile"
+				]
+			}
+		}
+	},
+	"config": {},
+	"author": "Hua Wu",
+	"maintainer": "Hua Wu",
+	"license": "Other",
+	"source": "",
+	"url": "",
+	"custom": {
+		"gear-builder": {
+			"category": "analysis",
+			"image": "calc-cov"
+		}
+	}
+}
