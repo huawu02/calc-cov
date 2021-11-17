@@ -2,7 +2,7 @@
 	"name": "calc-cov",
 	"label": "Noise covariance matrix calculation",
 	"description": "Calculating the noise covariance matrix of a multi-channel receive array using the noise scan pfile",
-	"version": "1.0",
+	"version": "1.0.1",
 	"inputs": {
 		"pfile": {
 			"base": "file",
@@ -24,6 +24,9 @@
 		"gear-builder": {
 			"category": "analysis",
 			"image": "calc-cov"
-		}
+		},
+                "flywheel": {
+                        "suite": "Stanford CNI"
+                }
 	}
 }
