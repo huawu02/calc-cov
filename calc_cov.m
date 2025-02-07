@@ -45,7 +45,7 @@ for sidx = 1:ns
     end
 end
 
-f1 = figure('visible','on');
+f1 = figure('visible','off');
 if ns*ne > 1
     montage(abs(reshape(R, [nc,nc,ns*ne]))); % montage will somehow change the image resolution automatically
 else
@@ -56,7 +56,7 @@ caxis('auto');colormap(jet(256));colorbar;
 saveas(f1,fullfile(outpath, 'Noise_covariance.png'));
 save(fullfile(outpath, 'Noise_covariance.mat'), 'R');
 
-f2 = figure('visible','on');
+f2 = figure('visible','off');
 if ns*ne > 1
     montage(abs(reshape(cor, [nc,nc,ns*ne]))); % montage will somehow change the image resolution automatically
 else
@@ -67,7 +67,7 @@ caxis('auto');colormap(jet(256));colorbar;
 saveas(f2,fullfile(outpath, 'Noise_correlation.png'));
 save(fullfile(outpath, 'Noise_correlation.mat'), 'cor');
 
-f3 = figure('visible','on');
+f3 = figure('visible','off');
 for sidx = 1:ns
     for eidx = 1:ne
         plot(sort(abs(diag(R(:,:,sidx,eidx))),'descend'));
@@ -76,5 +76,5 @@ end
 title('Noise covariance matrix diagonal elements in descending order');
 saveas(f3,fullfile(outpath, 'Noise_covariance_diagonal.png'));
 
-% close all;
+close all;
 

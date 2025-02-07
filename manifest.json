@@ -1,8 +1,8 @@
 {
 	"name": "calc-cov",
-	"label": "Noise covariance matrix calculation",
+	"label": "Receiver array noise analysis",
 	"description": "Calculating the noise covariance matrix of a multi-channel receive array using the noise scan pfile",
-	"version": "1.0.1",
+	"version": "1.1",
 	"inputs": {
 		"pfile": {
 			"base": "file",
