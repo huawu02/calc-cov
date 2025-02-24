@@ -1,5 +1,5 @@
-# Start with the Matlab r2018b runtime container
-FROM flywheel/matlab-mcr:v95
+# Start with the Matlab r2024a runtime container
+FROM flywheel/matlab-mcr:0.1.0_2024a
 
 MAINTAINER Hua Wu <huawu@stanford.edu>
 

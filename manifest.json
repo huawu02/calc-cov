@@ -1,32 +1,37 @@
 {
-	"name": "calc-cov",
-	"label": "Receiver array noise analysis",
-	"description": "Calculating the noise covariance matrix of a multi-channel receive array using the noise scan pfile",
-	"version": "1.1",
-	"inputs": {
-		"pfile": {
-			"base": "file",
-			"description": "Noise scan P-File (.7.zip, or .7).",
-			"type": {
-				"enum": [
-					"pfile"
-				]
-			}
-		}
-	},
-	"config": {},
-	"author": "Hua Wu",
-	"maintainer": "Hua Wu",
-	"license": "Other",
-	"source": "",
-	"url": "",
-	"custom": {
-		"gear-builder": {
-			"category": "analysis",
-			"image": "calc-cov"
-		},
-                "flywheel": {
-                        "suite": "Stanford CNI"
-                }
-	}
+  "name": "calc-cov",
+  "label": "Receiver array noise analysis",
+  "description": "Calculating the noise covariance matrix of a multi-channel receive array using the noise scan pfile",
+  "version": "1.2.0",
+  "inputs": {
+    "pfile": {
+      "base": "file",
+      "description": "Noise scan P-File (.7.zip, or .7).",
+      "type": {
+        "enum": [
+          "pfile"
+        ]
+      }
+    }
+  },
+  "config": {},
+  "author": "Hua Wu",
+  "maintainer": "Hua Wu",
+  "license": "Other",
+  "source": "",
+  "url": "",
+  "custom": {
+    "gear-builder": {
+      "category": "analysis",
+      "image": "calc-cov:1.2.0"
+    },
+    "flywheel": {
+      "suite": "Stanford CNI"
+    }
+  },
+  "environment": {
+    "FLYWHEEL": "/flywheel/v0",
+    "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+    "PWD": "/opt/mcr"
+  }
 }

@@ -9,7 +9,7 @@ CONTAINER="[calc_cov]"
 echo -e "$CONTAINER  Initiated"
 
 # Configure the ENV
-export MCRROOT=/opt/mcr/v95
+export MCRROOT=/opt/mcr/R2024a
 export LD_LIBRARY_PATH=${MCRROOT}/runtime/glnxa64:${MCRROOT}/bin/glnxa64:${MCRROOT}/sys/os/glnxa64:$LD_LIBRARY_PATH
 export XAPPLRESDIR=${MCRROOT}/X11/app-defaults
 
